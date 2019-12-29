@@ -1,28 +1,41 @@
-# Pento tech challenge
+# Pento Tech Challenge
 
-Thanks for taking the time to do our tech challenge. 
+I'm used to organizing Go APIs following _Mat Ryer's style_. He has iterated this style over the years, the latest version is explained in his talk at [GopherCon Europe 2019](https://www.youtube.com/watch?v=8TLiGHJTlig).
 
-The challenge is to build a small full stack web app, that can help a freelancer track their time.
+## Requirements
 
-It should satisfy these user stories:
+- Docker 19.03+
+- docker-compose (which usually comes along Docker in most OSes, but here's a [link][dc] just in case)
+- A bash-compatible shell (git bash on Windows, bash/zsh/fish on Linux/OSX).
 
-- As a user, I want to be able to start a time tracking session
-- As a user, I want to be able to stop a time tracking session
-- As a user, I want to be able to name my time tracking session
-- As a user, I want to be able to save my time tracking session when I am done with it
-- As a user, I want an overview of my sessions for the day, week and month
-- As a user, I want to be able to close my browser and shut down my computer and still have my sessions visible to me when I power it up again.
+[dc]: https://github.com/docker/compose
 
-## Getting started
+## Quickstart
 
-You can fork this repo and use the fork as a basis for your project. We don't have any requirements on what stack you use to solve the task, so there is nothing set up beforehand.
+- Open up a terminal at this project's root
 
-## Timing
+```bash
+$ docker-compose up -d
+```
 
-- Don't spend more than a days work on this challenge. We're not looking for perfection, rather try to show us something special and have reasons for your decisions.
-- Get back to us when you have a timeline for when you are done.
+- Go to <http://localhost:8080> in your prefered web browser
+- That's it!
 
-## Notes
+There's two special endpoints:
 
- - This is technically possible to implement only on the frontend, but please take the opportunity to show your skills on the entire stack 
- - Please focus more on code quality, building a robust service and such, than on the UI.
+- `GET` <http://localhost:8080/_/debug/vars> to see expvar metrics (simplified Prometheus builtin into Go's stdin)
+- `POST` <http://localhost:8080/timer/_fake> to generate some fake data to play around with
+
+## How did I work with this?
+
+Although I could just do `go run cmd/backend/main.go` (from the project's root) I've used [modd](https://github.com/cortesi/modd/releases) for live reloading.
+
+Download the binary, put it in your path and run `modd` from the project's root.
+
+## What about the frontend?
+
+Well... There's nothing special required, I just put all frontend code inside `static/main.jsx`.
+
+I decided NOT to use a bundler (rollup/webpack) or a template like `create-react-app` to _keep things simple_.
+
+The end result is almost 400 lines of JavaScript in a single file which is not that simple after all but I aimed for a days work and in the end I couldn't clean it up.
